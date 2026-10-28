@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: cosmic-bazi-yongshen
+    runtime: docker
+    plan: starter
+    healthCheckPath: /health
+    autoDeploy: true

@@ -1,0 +1,2 @@
+# COSMIC 5.1 Mac uses only the Python 3 standard library at runtime.
+# No pip install is required for startup.
