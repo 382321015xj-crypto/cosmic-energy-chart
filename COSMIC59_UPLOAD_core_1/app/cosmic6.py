@@ -103,7 +103,8 @@ def analyze(payload):
     target_year = int(base_payload["options"].get("target_year") or datetime.now().year)
     base_payload["options"]["target_year"] = target_year
     bazi = calculate_product(base_payload)
-    ziwei = ziwei_chart(dt,b["gender"])
+    ziwei_dt=datetime.fromisoformat(bazi.get("time_correction",{}).get("true_solar_datetime") or dt.isoformat())
+    ziwei = ziwei_chart(ziwei_dt,b["gender"])
     lunar = lunar_calendar(dt)
     target_date=str(payload.get('target_date') or datetime.now(ZoneInfo(bazi['geo']['iana_timezone'])).date().isoformat())
     daily_hours=daily_hour_pillars(target_date)
