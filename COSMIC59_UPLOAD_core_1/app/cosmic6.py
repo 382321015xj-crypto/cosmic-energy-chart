@@ -134,13 +134,12 @@ def fengshui_flying_stars(payload):
     year=int(payload.get("target_year") or datetime.now().year)
     built=int(payload.get("built_year") or year)
     period=max(1,min(9,(built-1864)//20+1))
-    sectors=["北","西南","东","东南","中","西北","西","东北","南"]
-    # Annual flying star center star; Luo Shu flight order from center, NW, W, NE, S, N, SW, E, SE.
+    # Annual flying-star route: center -> NW -> W -> NE -> S -> N -> SW -> E -> SE.
     center=((11-(year%9)-1)%9)+1
-    flight=[4,9,2,3,5,7,8,1,6] # sector indices for Luo Shu palace arrangement N,SW,E,SE,C,NW,W,NE,S
+    flight=["中","西北","西","东北","南","北","西南","东","东南"]
     stars={}
-    for step,sector_index in enumerate(flight):
-        stars[sectors[sector_index]]=((center-1-step)%9)+1
+    for step,sector in enumerate(flight):
+        stars[sector]=((center-1-step)%9)+1
     facing_index=int(((direction+22.5)%360)//45)
     directions=["北","东北","东","东南","南","西南","西","西北"]
     facing=directions[facing_index]
