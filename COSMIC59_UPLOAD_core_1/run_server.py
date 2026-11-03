@@ -79,8 +79,8 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         p=urlparse(self.path)
-        if p.path == '/cosmic6-preview.html':
-            f=(ROOT / 'web' / 'cosmic6-preview.html').resolve()
+        if p.path in ('/cosmic6-preview.html','/cosmic6-app.html'):
+            f=(ROOT / 'web' / p.path.lstrip('/')).resolve()
             if (ROOT / 'web').resolve() in f.parents and f.is_file():
                 data=f.read_bytes(); self.send_response(200); self.send_header('Content-Type','text/html; charset=utf-8'); self.send_header('Content-Length',str(len(data))); self.end_headers(); self.wfile.write(data); return
 
