@@ -1,0 +1,36 @@
+name: COSMIC 6.0 preserve original UI
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate HTML and Python syntax
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          class Check(HTMLParser):
+              pass
+          p=Path('COSMIC59_UPLOAD_core_1/web/index.html')
+          parser=Check()
+          parser.feed(p.read_text(encoding='utf-8'))
+          parser.close()
+          print('HTML parser: OK')
+          PY
+          python -m compileall -q COSMIC59_UPLOAD_core_1
+      - name: Package original COSMIC web app
+        run: |
+          cd COSMIC59_UPLOAD_core_1
+          zip -r ../COSMIC_6.0_PRESERVE_ORIGINAL_UI.zip . -x '*.pyc' '__pycache__/*' '.pytest_cache/*' '*.zip'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: COSMIC-6.0-preserve-original-UI
+          path: COSMIC_6.0_PRESERVE_ORIGINAL_UI.zip
+          retention-days: 14
