@@ -3,7 +3,7 @@ from datetime import datetime, date, timedelta
 from zoneinfo import ZoneInfo
 from secrets import randbelow
 from typing import Any
-import calendar
+import calendar, json, urllib.request
 
 VERSION = "6.0.0"
 
@@ -115,6 +115,21 @@ def cast_yijing(payload):
             "moving_lines":[i+1 for i,x in enumerate(lines) if x["moving"]],
             "note":"已生成六爻阴阳及动爻。完整卦名、卦辞、爻辞须由经校验的六十四卦典籍数据表映射，当前不编造原文。"}
 
+def _load_huangdaxian_dataset():
+    from pathlib import Path
+    path=Path(__file__).resolve().parent.parent / "data" / "huangdaxian_100.json"
+    if path.is_file():
+        data=json.loads(path.read_text(encoding="utf-8"))
+    else:
+        url="https://www.kaucim.ai/datasets/wong-tai-sin-kau-cim-100.json"
+        req=urllib.request.Request(url,headers={"User-Agent":"COSMIC-Energy-Chart/6.0","Accept":"application/json"})
+        with urllib.request.urlopen(req,timeout=12) as response:
+            data=json.loads(response.read().decode("utf-8"))
+    records=data.get("records") or []
+    if len(records)!=100 or {int(x.get("number",0)) for x in records}!=set(range(1,101)):
+        raise RuntimeError("黄大仙灵签数据集校验失败：必须包含完整且不重复的1至100签。")
+    return data
+
 def draw_lingqian(payload):
     category=str(payload.get("category","")).strip()
     series=str(payload.get("series","黄大仙灵签")).strip()
@@ -122,11 +137,17 @@ def draw_lingqian(payload):
     if series!="黄大仙灵签": raise ValueError("当前此接口仅支持黄大仙灵签。")
     if not category: raise ValueError("请选择求签事项类型。")
     if days not in (1,3,7,14,30): raise ValueError("时间范围只支持 1/3/7/14/30 天。")
+    dataset=_load_huangdaxian_dataset()
     number=randbelow(100)+1
+    sign=next(x for x in dataset["records"] if int(x["number"])==number)
     return {"series":series,"category":category,"days":days,"number":number,
-            "drawn_at":datetime.now().astimezone().isoformat(),"status":"SIGN_TEXT_DATA_REQUIRED",
-            "interpretation":{"plain":"签号已随机抽取。导入经核对的黄大仙一百签原文版本后，系统才会展示签文、白话解、典故及逐日建议。","advice":"把签文作为反思提示，不作为医疗、法律、投资或重大决定的唯一依据。"},
-            "source_requirement":"需在 data/huangdaxian_100.json 中配置选定版本的100签原文、签题、典故与等级；不同流传版本不可混用。"}
+            "title":sign.get("titleZhHant",""),"grade":sign.get("gradeZhHant",""),
+            "poem_original":sign.get("poemZhHant",""),
+            "canonical_url":sign.get("canonicalUrlZhHant",""),
+            "dataset":{"name":dataset.get("name"),"version":dataset.get("version"),"citation":dataset.get("citation"),"source":dataset.get("source")},
+            "drawn_at":datetime.now().astimezone().isoformat(),"status":"TEXT_AVAILABLE",
+            "interpretation":{"plain":"已取得该签的经核对原文。白话解、典故和按所选事项的具体判断应以有来源的注解或经审核的解释模块补充；本次不将未经核验的内容伪装成传统签文。","seven_day":"未来所选周期可用作复盘窗口：先核对现实条件、列出可执行事项与风险，不把签文视为必然预言。"},
+            "disclaimer":"灵签属于传统文化体验，不应作为医疗、法律、投资或重大人生决定的唯一依据。"}
 
 def fengshui_flying_stars(payload):
     direction=float(payload.get("facing_degrees"))
