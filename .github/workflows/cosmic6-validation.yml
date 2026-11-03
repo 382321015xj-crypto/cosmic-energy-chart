@@ -17,7 +17,7 @@ jobs:
       - run: cd COSMIC59_UPLOAD_core_1 && pytest -q
 
       - name: Package COSMIC 6.0 upload bundle
-        run: cd COSMIC59_UPLOAD_core_1 && zip -r ../COSMIC_6.0_UPLOAD_BUNDLE.zip . -x "__pycache__/*" "*.pyc" ".pytest_cache/*"
+        run: cd COSMIC59_UPLOAD_core_1 && zip -r ../COSMIC_6.0_UPLOAD_BUNDLE.zip . -x "*.zip" "*.pyc" "__pycache__/*" ".pytest_cache/*"
       - uses: actions/upload-artifact@v4
         with:
           name: COSMIC-6.0-upload-bundle
