@@ -3,7 +3,7 @@ on:
   push:
     branches: [cosmic-6.0-upgrade]
   pull_request:
-    branches: [cosmic-6.0-upgrade]
+    branches: [main]
 jobs:
   test:
     runs-on: ubuntu-latest
