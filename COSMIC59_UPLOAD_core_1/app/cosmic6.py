@@ -77,6 +77,23 @@ def lunar_calendar(dt: datetime):
             "day_ganzhi":lunar.getDayInGanZhi(),"time_ganzhi":lunar.getTimeInGanZhi(),
             "jieqi":lunar.getJieQi()}
 
+def daily_hour_pillars(target_date: str):
+    try:
+        from lunar_python import Solar
+    except ImportError as exc:
+        raise RuntimeError('历法依赖未安装：请安装 requirements-v6.txt') from exc
+    try:
+        y,m,d=[int(x) for x in target_date.split('-')]
+        datetime(y,m,d)
+    except Exception as exc:
+        raise ValueError('target_date 必须为 YYYY-MM-DD') from exc
+    samples=[('子时','23:30',23,30),('丑时','01:30',1,30),('寅时','03:30',3,30),('卯时','05:30',5,30),('辰时','07:30',7,30),('巳时','09:30',9,30),('午时','11:30',11,30),('未时','13:30',13,30),('申时','15:30',15,30),('酉时','17:30',17,30),('戌时','19:30',19,30),('亥时','21:30',21,30)]
+    rows=[]
+    for branch,label,hour,minute in samples:
+        lunar=Solar.fromYmdHms(y,m,d,hour,minute,0).getLunar()
+        rows.append({'branch':branch,'sample_time':label,'day_ganzhi':lunar.getDayInGanZhi(),'hour_ganzhi':lunar.getTimeInGanZhi(),'lunar_date':lunar.toString()})
+    return {'date':target_date,'method':'lunar-python day/hour Ganzhi; representative midpoint for each double-hour','hours':rows,'note':'子时以当日23:30计算，可能触发历法库的子初换日规则；正式产品应提供换日规则开关并与八字主引擎统一。'}
+
 def analyze(payload):
     dt,b = _validate_birth(payload)
     from app.product import calculate_product
@@ -88,9 +105,11 @@ def analyze(payload):
     bazi = calculate_product(base_payload)
     ziwei = ziwei_chart(dt,b["gender"])
     lunar = lunar_calendar(dt)
+    target_date=str(payload.get('target_date') or datetime.now(ZoneInfo(bazi['geo']['iana_timezone'])).date().isoformat())
+    daily_hours=daily_hour_pillars(target_date)
     return {"version":VERSION,"birth_profile":bazi.get("profile"),"geo":bazi.get("geo"),
             "bazi":bazi,"ziwei":ziwei,"lunar_calendar":lunar,
-            "annual":bazi.get("liu_nian"),
+            "annual":bazi.get("liu_nian"),"daily_hours":daily_hours,
             "rule_versions":{"bazi":bazi.get("engine",{}).get("version"),"ziwei":"iztro-py","calendar":"lunar-python"},
             "limitations":["堪舆需要房屋坐向、建成年份及平面资料，未提供时不推断。","易经及灵签必须由用户主动起卦/摇签，不与出生盘混为一谈。"]}
 
