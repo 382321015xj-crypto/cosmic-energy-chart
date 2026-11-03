@@ -9,10 +9,13 @@ def test_yijing_cast_has_six_lines():
     assert all(x["value"] in (6,7,8,9) for x in result["lines_bottom_to_top"])
     assert all(x["moving"] == (x["value"] in (6,9)) for x in result["lines_bottom_to_top"])
 
-def test_huangdaxian_draw_is_marked_data_required():
+def test_huangdaxian_draw_returns_verified_record(monkeypatch):
+    records=[{"number":i,"titleZhHant":f"签题{i}","gradeZhHant":"中平","poemZhHant":"测试签诗","canonicalUrlZhHant":"https://example.org"} for i in range(1,101)]
+    monkeypatch.setattr(cosmic6,"_load_huangdaxian_dataset",lambda:{"name":"test","version":"1","citation":"test","source":{},"records":records})
     result = cosmic6.draw_lingqian({"category":"财运财富","series":"黄大仙灵签","days":7})
     assert 1 <= result["number"] <= 100
-    assert result["status"] == "SIGN_TEXT_DATA_REQUIRED"
+    assert result["status"] == "TEXT_AVAILABLE"
+    assert result["poem_original"] == "测试签诗"
 
 def test_annual_flying_star_2026_center_one():
     result = cosmic6.fengshui_flying_stars({"facing_degrees":180,"built_year":2020,"target_year":2026})
