@@ -60,7 +60,7 @@ def ziwei_chart(dt: datetime, gender: str):
         "soul_palace":_jsonable(chart.get_soul_palace()),
         "body_palace":_jsonable(chart.get_body_palace()) if hasattr(chart,"get_body_palace") else None,
         "palaces":palaces, "major_stars":stars,
-        "decadal":_jsonable(chart.horoscope(max(1, datetime.now().year-dt.year)).decadal) if hasattr(chart,"horoscope") else None,
+        
         "rule_note":"采用 iztro-py 排盘规则；流派参数应在产品设置中显式选择。"
     }
     return result
