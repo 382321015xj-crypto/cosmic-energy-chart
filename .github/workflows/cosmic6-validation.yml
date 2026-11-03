@@ -1,0 +1,25 @@
+name: COSMIC 6.0 validation
+on:
+  push:
+    branches: [cosmic-6.0-upgrade]
+  pull_request:
+    branches: [main]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r COSMIC59_UPLOAD_core_1/requirements-v6.txt pytest
+      - run: python -m compileall -q COSMIC59_UPLOAD_core_1
+      - run: cd COSMIC59_UPLOAD_core_1 && pytest -q
+
+      - name: Package COSMIC 6.0 upload bundle
+        run: cd COSMIC59_UPLOAD_core_1 && zip -r ../COSMIC_6.0_UPLOAD_BUNDLE.zip . -x "*.zip" "*.pyc" "__pycache__/*" ".pytest_cache/*"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: COSMIC-6.0-upload-bundle
+          path: COSMIC_6.0_UPLOAD_BUNDLE.zip
+          retention-days: 14

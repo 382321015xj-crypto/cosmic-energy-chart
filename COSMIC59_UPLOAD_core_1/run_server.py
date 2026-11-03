@@ -66,14 +66,24 @@ def generate_jewelry(payload):
         return fingerprint,raw,False
 
 class Handler(BaseHTTPRequestHandler):
-    server_version = 'BaZiCosmic/5.8'
+    server_version = 'BaZiCosmic/6.0'
     def log_message(self, fmt, *args):
         print('[HTTP] ' + fmt % args)
     def send_json(self, status, obj):
         data=json.dumps(obj,ensure_ascii=False,separators=(',',':')).encode('utf-8')
         self.send_response(status); self.send_header('Content-Type','application/json; charset=utf-8'); self.send_header('Content-Length',str(len(data))); self.end_headers(); self.wfile.write(data)
+    def _read_json(self, limit=50000):
+        n=int(self.headers.get('Content-Length','0'))
+        if n<1 or n>limit: raise ValueError('请求内容为空或超过限制')
+        return json.loads(self.rfile.read(n).decode('utf-8'))
+
     def do_GET(self):
         p=urlparse(self.path)
+        if p.path in ('/cosmic6-preview.html','/cosmic6-app.html'):
+            f=(ROOT / 'web' / p.path.lstrip('/')).resolve()
+            if (ROOT / 'web').resolve() in f.parents and f.is_file():
+                data=f.read_bytes(); self.send_response(200); self.send_header('Content-Type','text/html; charset=utf-8'); self.send_header('Content-Length',str(len(data))); self.end_headers(); self.wfile.write(data); return
+
         if p.path.startswith('/api/v1/bracelet/image/'):
             image_id=p.path.rsplit('/',1)[-1]
             data=IMAGE_CACHE.get(image_id) if re.fullmatch(r'[a-f0-9]{64}',image_id) else None
@@ -98,6 +108,20 @@ class Handler(BaseHTTPRequestHandler):
         self.send_json(404,{'detail':'Not Found'})
     def do_POST(self):
         path=urlparse(self.path).path
+        if path.startswith('/api/v2/cosmic/'):
+            try:
+                payload=self._read_json()
+                from app import cosmic6
+                if path == '/api/v2/cosmic/analyze': result=cosmic6.analyze(payload)
+                elif path == '/api/v2/cosmic/yijing/cast': result=cosmic6.cast_yijing(payload)
+                elif path == '/api/v2/cosmic/lingqian/draw': result=cosmic6.draw_lingqian(payload)
+                elif path == '/api/v2/cosmic/fengshui/flying-stars': result=cosmic6.fengshui_flying_stars(payload)
+                else: self.send_json(404,{'detail':'Not Found'}); return
+                self.send_json(200,result)
+            except (ValueError, KeyError) as e: self.send_json(422,{'detail':str(e)})
+            except Exception as e:
+                traceback.print_exc(); self.send_json(503,{'detail':str(e)})
+            return
         if path=='/api/v1/bracelet/generate':
             try:
                 n=int(self.headers.get('Content-Length','0'))
@@ -120,7 +144,7 @@ class Handler(BaseHTTPRequestHandler):
 
 def main():
     host=os.environ.get('HOST','0.0.0.0'); port=int(os.environ.get('PORT', os.environ.get('BAZI_PORT','8000')))
-    print('东方能量命盘 COSMIC 5.8 WEB')
+    print('东方能量命盘 COSMIC 6.0 WEB')
     print('服务监听：%s:%s' % (host,port))
     print('运行核心：Python 标准库（启动不需要 pip 安装）')
     ThreadingHTTPServer((host,port),Handler).serve_forever()
