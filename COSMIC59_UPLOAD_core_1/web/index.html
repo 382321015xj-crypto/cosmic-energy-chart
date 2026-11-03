@@ -8,7 +8,32 @@ html,body{max-width:100%;overflow-x:hidden}.layout>section,.mainTop>*,.middle>*,
 .bracelet-preview{width:100%;height:230px;display:block;background:radial-gradient(ellipse at 50% 35%,#26313b,#080d13 76%)}.bracelet-note{padding:7px 12px;color:#b7c4cc;font:11px/1.5 system-ui;background:#0c141a}
 </style><style>.ai-controls{padding:10px 14px}.ai-generate{cursor:pointer;background:#82272f;border-color:#ba4650;min-height:43px}.ai-generate:disabled{opacity:.5;cursor:wait}.ai-status{font:12px/1.6 system-ui;color:#e6c5a0;margin-top:7px}.ai-photo-image{width:100%;height:270px;object-fit:contain;background:radial-gradient(#2b3033,#090f15);display:block}.ai-photo-area{min-height:230px}</style><style>
 .cosmic59{margin-top:16px}.cosmic59 .insight-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.cosmic59 .insight{border:1px solid #34434c;background:#0a151c;border-radius:10px;padding:16px}.cosmic59 h3{font-size:17px;color:#efd4aa;margin:0 0 10px}.cosmic59 p{font:13px/1.9 system-ui,sans-serif;color:#c6cdd0;margin:8px 0}.cosmic59 .mini{font:11px/1.7 system-ui;color:#96a9b1}.cosmic59 .section-title{color:#efd4aa;font-size:22px;margin:20px 0 12px}.cosmic59 .pill{display:inline-block;color:#dfc29a;background:#38271e;border-radius:12px;padding:3px 9px;font:11px system-ui}.cosmic59 .routine{display:grid;grid-template-columns:115px 1fr;gap:12px;border-bottom:1px solid #283841;padding:10px 0;font:13px/1.8 system-ui}.cosmic59 .routine b{color:#e8c899}.cosmic59 .note{font:12px/1.8 system-ui;color:#a5b4bd;padding:12px;border-left:2px solid #8e6d46;background:#111b22}@media(max-width:900px){.cosmic59 .insight-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:600px){.cosmic59 .insight-grid{grid-template-columns:minmax(0,1fr)}.cosmic59 .routine{grid-template-columns:90px 1fr}}
-</style></head><body><header><div class="brand"><div class="seal">東<br>方</div><div><div class="logo">COSMIC</div><div class="tag">东方玄学 · 命理与生活美学</div></div></div><div class="motto">ANCIENT WISDOM · MODERN LIFE<br><br>东方智慧 · 现代生活</div></header>
+</style>
+<style>
+/* COSMIC 6.0: additive extension; inherit the original COSMIC 5.9 visual system */
+.cosmic6-shell{margin-top:16px;border:1px solid #33424d;border-radius:11px;background:linear-gradient(145deg,#0b141cef,#071016ef);padding:18px;box-shadow:0 18px 45px #0004}
+.cosmic6-head{display:flex;justify-content:space-between;align-items:end;gap:12px;border-bottom:1px solid #29343d;padding-bottom:13px;margin-bottom:14px}
+.cosmic6-head .en{font-size:12px;letter-spacing:.22em;color:#d8b98f}
+.cosmic6-head .cn{font-size:20px;color:#efd4aa;margin-top:4px}
+.cosmic6-version{font:11px system-ui;color:#aeb7bd;border:1px solid #46515a;border-radius:20px;padding:5px 9px}
+.cosmic6-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 16px}
+.cosmic6-tab{width:auto;min-height:38px;padding:8px 13px;background:#0e1820;border:1px solid #43515d;color:#e8d7c0;cursor:pointer}
+.cosmic6-tab.active{background:#76262b;border-color:#c34b4e;color:#fff}
+.cosmic6-pane{display:none;border:1px solid #2d3b45;border-radius:9px;background:#081119;padding:16px}
+.cosmic6-pane.active{display:block}
+.cosmic6-pane h3{color:#efd4aa;font-size:17px;margin:0 0 10px}
+.cosmic6-pane p{font:13px/1.8 system-ui;color:#bdc5ca;margin:7px 0}
+.cosmic6-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.cosmic6-item{border:1px solid #34434c;background:#0a151c;border-radius:8px;padding:12px}
+.cosmic6-item b{display:block;color:#efd4aa;margin-bottom:6px}
+.cosmic6-item small{font:11px/1.7 system-ui;color:#9eabb3}
+.cosmic6-form{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-items:end}
+.cosmic6-form label{margin:0}
+.cosmic6-action{background:linear-gradient(100deg,#8f272c,#b83b42);border:0}
+.cosmic6-disclaimer{font:11px/1.7 system-ui;color:#84939c;margin-top:12px}
+@media(max-width:700px){.cosmic6-shell{padding:13px}.cosmic6-head{align-items:start;flex-direction:column}.cosmic6-grid{grid-template-columns:1fr}.cosmic6-form{grid-template-columns:1fr}.cosmic6-tab{flex:1 1 calc(50% - 8px)}}
+</style>
+</head><body><header><div class="brand"><div class="seal">東<br>方</div><div><div class="logo">COSMIC</div><div class="tag">东方玄学 · 命理与生活美学</div></div></div><div class="motto">ANCIENT WISDOM · MODERN LIFE<br><br>东方智慧 · 现代生活</div></header>
 <div class="page"><div class="layout"><aside class="panel side"><div class="ttl"><div class="en">Personal Information</div><div class="cn">个人信息</div></div><label>姓名 <small>Name · 可选</small></label><input id="name" placeholder="请输入姓名（可选）" autocomplete="off"><label>性别 <small>Gender</small></label><div class="gender"><button type="button" id="male" class="on">● 男 Male</button><button type="button" id="female">○ 女 Female</button></div><label>出生日期 <small>Date of Birth</small></label><input id="date" type="date" value="2000-01-01"><label>出生时间 <small>Time of Birth</small></label><input id="time" type="time" value="00:01"><label>出生地 <small>Location</small></label><select id="country"><option selected>中国</option><option>新加坡</option><option>美国</option><option>加拿大</option><option>澳大利亚</option><option>英国</option><option>其他</option></select><input id="province" value="浙江省" style="margin-top:8px" aria-label="省州"><input id="city" value="杭州市" style="margin-top:8px" aria-label="城市"><input id="district" placeholder="区县（可选）" style="margin-top:8px" aria-label="区县"><label>分析流年 <small>Annual Year</small></label><input id="year" type="number" value="2026"><button type="button" class="run" id="run">开始分析　→</button><button type="button" class="reset" id="reset">RESET　重新输入</button><div class="status" id="status">默认示例：2000年1月1日 00:01 · 中国 · 浙江省 · 杭州市。</div><div class="notice">出生地按国家 → 省/州 → 城市 → 区县输入，不设置街道。系统不使用浏览器本地存储保留上一位用户资料。</div></aside>
 <section><div id="out"><div class="mainTop"><div class="panel"><div class="ttl"><div class="en">BaZi Chart</div><div class="cn">八字命盘</div></div><div class="facts">填写左侧资料后点击“开始分析”，这里显示四柱、真太阳时、日主与格局。</div></div><div class="panel"><div class="ttl"><div class="en">Five Elements Analysis</div><div class="cn">五行力量分析</div></div><div class="facts">五行力量采用定性等级展示，避免把加权分值误读为百分比。</div></div><div class="panel"><div class="ttl"><div class="en">Yong Shen Recommendation</div><div class="cn">喜用神分析</div></div><div class="facts">输出第一、第二、第三喜用与忌神排除。</div></div></div></div></section></div></div>
 <script>
@@ -108,4 +133,37 @@ let previousRender=window.render;
 if(typeof previousRender==='function'){window.render=function(j){previousRender(j);render59(j)}}
 else {document.addEventListener('DOMContentLoaded',()=>{let r=window.render;if(typeof r==='function')window.render=function(j){r(j);render59(j)}})}
 })();
-</script></body></html>
+</script>
+<script>
+/* COSMIC 6.0 integrated navigation: mounts inside the original result area.
+   No new standalone page and no replacement of the 5.9 header/form/layout. */
+(function(){
+ const modules=[
+  {id:'ziwei',name:'紫微斗数',en:'ZI WEI',title:'紫微命盘与流年叠宫',desc:'在原有命盘结果下增加紫微斗数视角，规划命宫、身宫、十二宫、大限、流年与流月的交叉阅读。',status:'计算模块待完成校验',items:[['本命十二宫','命宫、兄弟、夫妻、子女、财帛、疾厄、迁移、交友、官禄、田宅、福德、父母'],['大限与流年','大限宫位、流年命宫、四化飞星及宫位叠加'],['多体系交叉','与八字喜用、大运及流年五行并列展示，不混用术语']]},
+  {id:'bazi',name:'八字流年',en:'BAZI & ANNUAL',title:'本命、大运与流年深度分析',desc:'保留原有八字引擎和五行强弱、喜用忌神、大运时间轴，在此扩展年度主题、关键月份、事业财务、感情关系、贵人与人际风险。',status:'原有八字计算保留；深度解读持续扩展',items:[['本命结构','日主旺衰、格局取用、十神配置与五行生克制化'],['大运流年','大运与太岁作用、合冲刑害、喜忌引动及月份观察'],['人生领域','事业、正财、偏财、风险、感情、亲情、友情、贵人与人际边界']]},
+  {id:'hours',name:'十二时辰',en:'TWELVE DOUBLE-HOURS',title:'每日十二时辰提示',desc:'以用户选择的日期和所在地时区为基础，列出十二时辰的传统干支与生活安排参考。时辰提示不应被解释为某时必然发生吉凶事件。',status:'需与统一历法、换日规则及当地时区完成联调',items:[['工作节奏','专注、沟通、复盘与休息的安排建议'],['人际提醒','贵人协作、利益边界、沟通误差与证据留存'],['生活节律','睡眠、饮食、运动及节气提醒；不替代医疗建议']]},
+  {id:'iching',name:'易经',en:'I CHING',title:'六爻与卦象分析',desc:'规划以明确起卦方式、起卦时间、动爻及本卦变卦为基础的解读，不以随机文字代替真实卦象计算。',status:'卦例与爻辞库需逐条校验后启用',items:[['起卦记录','三钱法、时间起卦及用户指定起卦方式'],['卦象结构','本卦、互卦、变卦、动爻与世应关系'],['解卦层次','卦辞、爻辞、象义、现实问题与行动建议']]},
+  {id:'fortune',name:'近日事项求签',en:'FORTUNE DRAW',title:'近日事项求签',desc:'先选择所问事项，再选择传统签系与时间范围，之后才进入摇签与解签。',status:'签文原文与版本校验完成后开放正式抽签',items:[['求签事项','事业、健康、姻缘、财运财富、学业、出行、家庭'],['传统签系','黄大仙灵签、观音灵签、关帝灵签、月老灵签'],['解签范围','默认未来7天；呈现签号、签诗原文、白话解、宜忌及逐日建议']]},
+  {id:'fengshui',name:'堪舆基础盘',en:'FENG SHUI',title:'九宫飞星与居住环境',desc:'从流年飞星、方位、坐向、建造年份及户型信息逐层分析；不在缺少房屋资料时假定住宅坐向。',status:'目前为模块规划，尚非完整宅盘',items:[['流年飞星','年紫白、九宫方位与当年变化'],['住宅参数','坐向、建造年份、户型及主要空间用途'],['空间建议','采光、通风、动线与传统方位文化建议']]},
+  {id:'jewelry',name:'首饰推荐',en:'JEWELRY DESIGN',title:'五行首饰方案',desc:'先展示本命与流年的文字搭配依据，再根据真实材料、颜色、珠径和结构生成首饰概念图。',status:'沿用原有手串配置及AI生图接口',items:[['本命方案','喜用优先级、主绳、主珠、配珠及避用元素'],['流年方案','本命基础上叠加当年变化，不以流年取代本命'],['实物图','文字方案先显示，AI图片作为后续可选生成内容']]}
+ ];
+ function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+ function mount(){
+  const out=document.getElementById('out');if(!out||out.querySelector('.cosmic6-shell'))return;
+  const shell=document.createElement('section');shell.className='cosmic6-shell';
+  shell.innerHTML='<div class="cosmic6-head"><div><div class="en">COSMIC ENERGY CHART · VERSION 6.0</div><div class="cn">东方能量 · 多体系分析中心</div></div><span class="cosmic6-version">在原版界面上增量升级</span></div>'+
+   '<div class="cosmic6-tabs" role="tablist" aria-label="COSMIC 6.0功能模块">'+modules.map((m,i)=>'<button type="button" class="cosmic6-tab '+(i===0?'active':'')+'" data-tab="'+m.id+'" role="tab" aria-selected="'+(i===0)+'">'+m.name+'</button>').join('')+'</div>'+
+   modules.map((m,i)=>'<div class="cosmic6-pane '+(i===0?'active':'')+'" data-pane="'+m.id+'"><h3>'+m.title+'</h3><p>'+m.desc+'</p><div class="cosmic6-grid">'+m.items.map(it=>'<div class="cosmic6-item"><b>'+it[0]+'</b><small>'+it[1]+'</small></div>').join('')+'</div><p class="cosmic6-disclaimer">'+m.status+'</p>'+(m.id==='fortune'?'<div class="cosmic6-form"><label>求签事项<select id="cosmic6-question"><option>事业</option><option>健康</option><option>姻缘</option><option selected>财运财富</option><option>学业</option><option>出行</option><option>家庭</option></select></label><label>传统签系<select id="cosmic6-system"><option selected>黄大仙灵签</option><option>观音灵签</option><option>关帝灵签</option><option>月老灵签</option></select></label><label>解读时间范围<select id="cosmic6-range"><option selected>未来7天</option><option>未来30天</option><option>未来90天</option></select></label></div><p class="cosmic6-disclaimer">当前配置已按“财运财富 · 黄大仙灵签 · 未来7天”预选。正式摇签按钮将在签文原始版本与签号映射校验后启用，避免抽出错误签文。</p>':'')+'</div>').join('');
+  out.appendChild(shell);
+  shell.querySelectorAll('[data-tab]').forEach(btn=>btn.addEventListener('click',()=>{
+   shell.querySelectorAll('[data-tab]').forEach(x=>{x.classList.toggle('active',x===btn);x.setAttribute('aria-selected',x===btn?'true':'false')});
+   shell.querySelectorAll('[data-pane]').forEach(x=>x.classList.toggle('active',x.dataset.pane===btn.dataset.tab));
+  }));
+ }
+ const original=window.render;
+ if(typeof original==='function')window.render=function(data){original(data);mount()};
+ document.addEventListener('DOMContentLoaded',mount);
+ const reset=document.getElementById('reset');if(reset)reset.addEventListener('click',()=>setTimeout(mount,0));
+})();
+</script>
+</body></html>
