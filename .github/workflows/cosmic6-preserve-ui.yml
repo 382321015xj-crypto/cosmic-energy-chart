@@ -1,5 +1,7 @@
 name: COSMIC 6.0 preserve original UI
 on:
+  push:
+    branches: [cosmic-6.0-preserve-59-ui]
   pull_request:
     branches: [main]
   workflow_dispatch:
